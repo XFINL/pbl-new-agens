@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>客户支持</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    min-height: 100vh;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    padding: 24px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* 背景装饰光晕 */
+  body::before {
+    content: '';
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(180, 200, 255, 0.35) 0%, transparent 70%);
+    top: -200px;
+    right: -150px;
+    pointer-events: none;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200, 180, 255, 0.3) 0%, transparent 70%);
+    bottom: -180px;
+    left: -120px;
+    pointer-events: none;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 520px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 28px;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.04),
+      0 2px 8px rgba(0, 0, 0, 0.02),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    padding: 48px 40px 40px;
+    animation: cardIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  @keyframes cardIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .title {
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    font-weight: 300;
+    color: #8888a0;
+    margin-bottom: 36px;
+    line-height: 1.5;
+  }
+
+  .form-group {
+    margin-bottom: 22px;
+    position: relative;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555570;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    transition: color 0.3s;
+  }
+
+  .form-group:focus-within label {
+    color: #4a6cf7;
+  }
+
+  /* 输入框通用样式 */
+  .input-wrapper {
+    position: relative;
+  }
+
+  .input-wrapper input,
+  .input-wrapper select,
+  .input-wrapper textarea {
+    width: 100%;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #1a1a2e;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1.5px solid rgba(200, 200, 220, 0.4);
+    border-radius: 14px;
+    padding: 14px 18px;
+    outline: none;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .input-wrapper input::placeholder,
+  .input-wrapper textarea::placeholder {
+    color: #b0b0c8;
+    font-weight: 300;
+  }
+
+  .input-wrapper input:hover,
+  .input-wrapper select:hover,
+  .input-wrapper textarea:hover {
+    border-color: rgba(160, 160, 200, 0.6);
+    background: rgba(255, 255, 255, 0.65);
+  }
+
+  .input-wrapper input:focus,
+  .input-wrapper select:focus,
+  .input-wrapper textarea:focus {
+    border-color: #4a6cf7;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 0 4px rgba(74, 108, 247, 0.1);
+  }
+
+  /* 聚焦时底部发光条 */
+  .input-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #4a6cf7, transparent);
+    border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+
+  .form-group:focus-within .input-wrapper::after {
+    width: 70%;
+    opacity: 1;
+  }
+
+  /* 选择框 */
+  .select-wrapper {
+    position: relative;
+  }
+
+  .select-wrapper select {
+    cursor: pointer;
+    padding-right: 44px;
+    color: #1a1a2e;
+  }
+
+  .select-wrapper select option {
+    background: #ffffff;
+    color: #1a1a2e;
+    padding: 10px;
+  }
+
+  .select-wrapper .arrow {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid #9999b0;
+    border-bottom: 2px solid #9999b0;
+    transform: translateY(-70%) rotate(45deg);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .select-wrapper select:focus + .arrow {
+    border-color: #4a6cf7;
+    transform: translateY(-30%) rotate(-135deg);
+  }
+
+  /* 文本域 */
+  .input-wrapper textarea {
+    resize: vertical;
+    min-height: 110px;
+    max-height: 220px;
+    line-height: 1.6;
+  }
+
+  /* 提交按钮 */
+  .submit-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 16px 24px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+    background: linear-gradient(135deg, #4a6cf7, #6a4cf7);
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.3px;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #6a4cf7, #4a6cf7);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(74, 108, 247, 0.25);
+  }
+
+  .submit-btn:hover::before {
+    opacity: 1;
+  }
+
+  .submit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(74, 108, 247, 0.2);
+  }
+
+  .submit-btn span {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 输入框光晕动画 */
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+
+  .form-group:focus-within .input-wrapper {
+    animation: glowPulse 2s ease-in-out infinite;
+  }
+
+  /* 响应式 */
+  @media (max-width: 560px) {
+    .glass-card {
+      padding: 32px 24px 28px;
+      border-radius: 20px;
+    }
+    .title {
+      font-size: 22px;
+    }
+    body {
+      padding: 16px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="glass-card">
+    <h1 class="title">联系我们</h1>
+    <p class="subtitle">请填写以下信息，我们将尽快为您处理</p>
+
+    <form id="supportForm" novalidate>
+      <div class="form-group">
+        <label for="name">姓名</label>
+        <div class="input-wrapper">
+          <input type="text" id="name" placeholder="请输入您的姓名" autocomplete="name">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">邮箱</label>
+        <div class="input-wrapper">
+          <input type="email" id="email" placeholder="请输入您的邮箱地址" autocomplete="email">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">主题</label>
+        <div class="select-wrapper">
+          <select id="subject">
+            <option value="" disabled selected>请选择咨询主题</option>
+            <option value="account">账户问题</option>
+            <option value="payment">支付相关</option>
+            <option value="technical">技术支持</option>
+            <option value="feedback">建议反馈</option>
+            <option value="other">其他</option>
+          </select>
+          <div class="arrow"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="message">描述</label>
+        <div class="input-wrapper">
+          <textarea id="message" placeholder="请详细描述您的问题或需求"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <span>提交</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('supportForm');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const btn = this.querySelector('.submit-btn');
+    const originalText = btn.querySelector('span').textContent;
+    btn.querySelector('span').textContent = '提交中...';
+    btn.style.pointerEvents = 'none';
+
+    setTimeout(() => {
+      btn.querySelector('span').textContent = '已提交';
+      btn.style.background = 'linear-gradient(135deg, #34c759, #28a745)';
+
+      setTimeout(() => {
+        btn.querySelector('span').textContent = originalText;
+        btn.style.background = '';
+        btn.style.pointerEvents = '';
+      }, 2000);
+    }, 1000);
+  });
+
+  // 自动调整文本域高度
+  const textarea = document.getElementById('message');
+  textarea.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 220) + 'px';
+  });
+</script>
+
+</body>
+</html>
