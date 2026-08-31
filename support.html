@@ -6,14 +6,25 @@
 <title>客户支持</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<script src="https://cdn.jsdelivr.net/gh/Mael-667/Liquid-Glass-CSS@v1.2.1/liquidGlass.js"></script>
-
 <style>
   *, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+  }
+
+  /* 彻底取消所有框线 */
+  :focus { outline: 0 !important; }
+  :focus-visible { outline: 0 !important; }
+  ::-moz-focus-inner { border: 0 !important; }
+  a, button, input, select, textarea, [tabindex] {
+    outline: 0 !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-focus-ring-color: transparent !important;
+  }
+  a:focus, button:focus, input:focus, select:focus, textarea:focus, [tabindex]:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
   }
 
   body {
@@ -28,14 +39,12 @@
     overflow-x: hidden;
   }
 
-  /* 取消所有交互元素的框线 */
-  a, button, input, select, textarea, div[tabindex] {
-    outline: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-  a:focus, button:focus, input:focus, select:focus, textarea:focus, div[tabindex]:focus {
-    outline: none !important;
-    box-shadow: none !important;
+  /* 隐藏 SVG 滤镜容器 */
+  .svg-filters {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
   }
 
   .container {
@@ -62,10 +71,7 @@
   }
 
   @keyframes cardIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .title {
@@ -133,6 +139,7 @@
   .input-wrapper textarea:hover {
     border-color: rgba(0, 0, 0, 0.18);
     background: rgba(255, 255, 255, 0.7);
+    transform: scale(1.005);
   }
 
   .input-wrapper input:focus,
@@ -267,19 +274,15 @@
     font-weight: 400;
     color: #1a1a1a;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, padding-left 0.25s;
   }
 
-  .custom-select-option:first-child {
-    padding-top: 14px;
-  }
-
-  .custom-select-option:last-child {
-    padding-bottom: 14px;
-  }
+  .custom-select-option:first-child { padding-top: 14px; }
+  .custom-select-option:last-child { padding-bottom: 14px; }
 
   .custom-select-option:hover {
     background: rgba(0, 0, 0, 0.04);
+    padding-left: 22px;
   }
 
   .custom-select-option.selected {
@@ -294,15 +297,14 @@
   .custom-select-option.placeholder:hover {
     background: transparent;
     cursor: default;
+    padding-left: 18px;
   }
 
   .custom-select-option + .custom-select-option {
     border-top: 1px solid rgba(0, 0, 0, 0.04);
   }
 
-  .native-select {
-    display: none;
-  }
+  .native-select { display: none; }
 
   .input-wrapper textarea {
     resize: vertical;
@@ -325,20 +327,35 @@
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     letter-spacing: 0.3px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+
+  .submit-btn:hover::before {
+    transform: translateX(100%);
   }
 
   .submit-btn:hover {
     background: #000000;
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.01);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
   }
 
   .submit-btn:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.99);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
-  /* ===== 导航栏 ===== */
+  /* ===== 导航栏（液态玻璃） ===== */
   .navbar {
     position: fixed;
     left: 50%;
@@ -346,28 +363,20 @@
     z-index: 100;
     display: flex;
     align-items: center;
-    gap: 2px;
-    padding: 5px;
-    border-radius: 100px !important;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    gap: 3px;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 100px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255,255,255,0.6);
   }
 
-  .navbar,
-  .navbar::after,
-  .navbar::before {
-    border-radius: 100px !important;
-  }
-
-  .navbar.liquidGlass {
-    width: auto;
-  }
-
-  .navbar a {
-    text-decoration: none;
-  }
+  .navbar a { text-decoration: none; }
 
   .nav-item {
-    padding: 9px 20px;
+    padding: 8px 20px;
     font-size: 14px;
     font-weight: 400;
     color: #999999;
@@ -396,9 +405,7 @@
   }
 
   /* 语言切换 */
-  .lang-wrapper {
-    position: relative;
-  }
+  .lang-wrapper { position: relative; }
 
   .lang-dropdown {
     position: absolute;
@@ -432,73 +439,65 @@
     color: #1a1a1a;
     text-decoration: none;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, padding-left 0.25s;
   }
 
   .lang-item:hover {
     background: rgba(0, 0, 0, 0.04);
+    padding-left: 22px;
   }
 
-  .lang-item + .lang-item {
-    border-top: 1px solid rgba(0, 0, 0, 0.04);
-  }
+  .lang-item + .lang-item { border-top: 1px solid rgba(0, 0, 0, 0.04); }
+  .lang-item.active { font-weight: 500; background: rgba(0, 0, 0, 0.03); }
 
-  .lang-item.active {
-    font-weight: 500;
-    background: rgba(0, 0, 0, 0.03);
-  }
-
-  /* 桌面端：顶部悬浮 */
+  /* 桌面端 */
   @media (min-width: 768px) {
-    .navbar {
-      top: 28px;
-    }
-    .lang-dropdown {
-      bottom: calc(100% + 8px);
-      right: 0;
-    }
+    .navbar { top: 28px; }
+    .lang-dropdown { bottom: calc(100% + 8px); right: 0; }
   }
 
-  /* 手机端：底部悬浮 */
+  /* 手机端 */
   @media (max-width: 767px) {
-    body {
-      padding: 24px 16px 90px;
-    }
-
+    body { padding: 24px 16px 90px; }
     .navbar {
       bottom: 24px;
       width: calc(100% - 32px);
       max-width: 440px;
       justify-content: space-around;
     }
-
     .nav-item {
-      padding: 9px 0;
+      padding: 8px 0;
       flex: 1;
       text-align: center;
       font-size: 13px;
     }
-
-    .lang-dropdown {
-      bottom: calc(100% + 8px);
-      right: 0;
-    }
+    .lang-dropdown { bottom: calc(100% + 8px); right: 0; }
   }
 
   @media (max-width: 560px) {
-    .glass-card {
-      padding: 32px 24px 28px;
-      border-radius: 20px;
-    }
-    .title {
-      font-size: 22px;
-    }
+    .glass-card { padding: 32px 24px 28px; border-radius: 20px; }
+    .title { font-size: 22px; }
   }
 </style>
 </head>
 <body>
 
-<nav class="navbar liquidGlass glassLightMode" id="navbar">
+<svg class="svg-filters" aria-hidden="true">
+  <defs>
+    <filter id="liquid" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015 0.018" numOctaves="3" seed="5" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="B"/>
+    </filter>
+    <filter id="liquidRefraction" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012" numOctaves="2" seed="12" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="15" xChannelSelector="R" yChannelSelector="B" result="displaced"/>
+      <feGaussianBlur in="displaced" stdDeviation="2" result="blurred"/>
+      <feComposite in="blurred" in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+</svg>
+
+<nav class="navbar" id="navbar">
   <a href="https://example.com/" class="nav-item active">首页</a>
   <a href="https://example.com/services" class="nav-item">服务</a>
   <a href="https://example.com/support" class="nav-item">支持</a>
@@ -584,19 +583,13 @@
   // 语言切换
   const langWrapper = document.getElementById('langWrapper');
   const langTrigger = langWrapper.querySelector('.lang-trigger');
-
   langTrigger.addEventListener('click', function(e) {
     e.stopPropagation();
     langWrapper.classList.toggle('open');
   });
-
   document.addEventListener('click', function(e) {
-    if (!langWrapper.contains(e.target)) {
-      langWrapper.classList.remove('open');
-    }
+    if (!langWrapper.contains(e.target)) langWrapper.classList.remove('open');
   });
-
-  // 语言选项点击高亮
   const langItems = document.querySelectorAll('.lang-item');
   langItems.forEach(item => {
     item.addEventListener('click', function() {
@@ -611,16 +604,12 @@
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = this.querySelector('.submit-btn');
-    const originalText = btn.textContent;
+    const t = btn.textContent;
     btn.textContent = '提交中...';
     btn.style.pointerEvents = 'none';
-
     setTimeout(() => {
       btn.textContent = '已提交';
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.style.pointerEvents = '';
-      }, 2000);
+      setTimeout(() => { btn.textContent = t; btn.style.pointerEvents = ''; }, 2000);
     }, 1000);
   });
 
@@ -631,26 +620,10 @@
   const dropdown = customSelect.querySelector('.custom-select-dropdown');
   const options = dropdown.querySelectorAll('.custom-select-option');
   const nativeSelect = customSelect.querySelector('.native-select');
-
   let isOpen = false;
-
-  function toggleDropdown(e) {
-    if (e) e.stopPropagation();
-    isOpen ? closeDropdown() : openDropdown();
-  }
-
-  function openDropdown() {
-    isOpen = true;
-    customSelect.classList.add('open');
-    trigger.setAttribute('aria-expanded', 'true');
-  }
-
-  function closeDropdown() {
-    isOpen = false;
-    customSelect.classList.remove('open');
-    trigger.setAttribute('aria-expanded', 'false');
-  }
-
+  function toggleDropdown(e) { if (e) e.stopPropagation(); isOpen ? closeDropdown() : openDropdown(); }
+  function openDropdown() { isOpen = true; customSelect.classList.add('open'); trigger.setAttribute('aria-expanded', 'true'); }
+  function closeDropdown() { isOpen = false; customSelect.classList.remove('open'); trigger.setAttribute('aria-expanded', 'false'); }
   function selectOption(option) {
     options.forEach(opt => opt.classList.remove('selected'));
     if (option.dataset.value) {
@@ -667,34 +640,18 @@
     }
     closeDropdown();
   }
-
   trigger.addEventListener('click', toggleDropdown);
-
   options.forEach(opt => {
     opt.addEventListener('click', function(e) {
       e.stopPropagation();
-      if (this.classList.contains('placeholder')) {
-        closeDropdown();
-        return;
-      }
+      if (this.classList.contains('placeholder')) { closeDropdown(); return; }
       selectOption(this);
     });
   });
-
-  document.addEventListener('click', function(e) {
-    if (!customSelect.contains(e.target)) {
-      closeDropdown();
-    }
-  });
-
+  document.addEventListener('click', function(e) { if (!customSelect.contains(e.target)) closeDropdown(); });
   trigger.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggleDropdown();
-    }
-    if (e.key === 'Escape') {
-      closeDropdown();
-    }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleDropdown(); }
+    if (e.key === 'Escape') closeDropdown();
   });
 
   // 文本域自动高度
