@@ -90,7 +90,6 @@
     color: #1a1a1a;
   }
 
-  /* 输入框通用样式 */
   .input-wrapper {
     position: relative;
   }
@@ -131,7 +130,6 @@
     box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
   }
 
-  /* 聚焦时底部线条 */
   .input-wrapper::after {
     content: '';
     position: absolute;
@@ -210,7 +208,6 @@
     border-color: #666666;
   }
 
-  /* 聚焦底部线条 */
   .custom-select-trigger::after {
     content: '';
     position: absolute;
@@ -230,7 +227,6 @@
     opacity: 1;
   }
 
-  /* 下拉菜单 */
   .custom-select-dropdown {
     position: absolute;
     top: calc(100% + 6px);
@@ -294,12 +290,10 @@
     border-top: 1px solid rgba(0, 0, 0, 0.04);
   }
 
-  /* 隐藏原生 select */
   .native-select {
     display: none;
   }
 
-  /* 文本域 */
   .input-wrapper textarea {
     resize: vertical;
     min-height: 110px;
@@ -307,7 +301,6 @@
     line-height: 1.6;
   }
 
-  /* 提交按钮 */
   .submit-btn {
     width: 100%;
     margin-top: 8px;
@@ -335,7 +328,78 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
-  /* 响应式 */
+  /* ===== 导航栏 ===== */
+  .navbar {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 100px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  }
+
+  .nav-item {
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #999999;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+
+  .nav-item:hover {
+    color: #666666;
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .nav-item.active {
+    color: #1a1a1a;
+    background: rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+  }
+
+  /* 桌面端：顶部悬浮 */
+  @media (min-width: 768px) {
+    .navbar {
+      top: 28px;
+    }
+  }
+
+  /* 手机端：底部悬浮 */
+  @media (max-width: 767px) {
+    body {
+      padding: 24px 16px 90px;
+    }
+
+    .navbar {
+      bottom: 24px;
+      width: calc(100% - 32px);
+      max-width: 440px;
+      justify-content: space-around;
+      gap: 0;
+    }
+
+    .nav-item {
+      padding: 10px 0;
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+    }
+  }
+
   @media (max-width: 560px) {
     .glass-card {
       padding: 32px 24px 28px;
@@ -344,13 +408,17 @@
     .title {
       font-size: 22px;
     }
-    body {
-      padding: 16px;
-    }
   }
 </style>
 </head>
 <body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-item active" data-page="home">首页</div>
+  <div class="nav-item" data-page="services">服务</div>
+  <div class="nav-item" data-page="support">支持</div>
+  <div class="nav-item" data-page="about">关于</div>
+</nav>
 
 <div class="container">
   <div class="glass-card">
@@ -411,7 +479,34 @@
 </div>
 
 <script>
+  // 导航栏切换
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    item.addEventListener('click', function() {
+      navItems.forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // 表单提交
   const form = document.getElementById('supportForm');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('.submit-btn');
+    const originalText = btn.textContent;
+    btn.textContent = '提交中...';
+    btn.style.pointerEvents = 'none';
+
+    setTimeout(() => {
+      btn.textContent = '已提交';
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.pointerEvents = '';
+      }, 2000);
+    }, 1000);
+  });
+
+  // 自定义下拉框
   const customSelect = document.getElementById('customSelect');
   const trigger = customSelect.querySelector('.custom-select-trigger');
   const triggerText = trigger.querySelector('.trigger-text');
@@ -420,7 +515,6 @@
   const nativeSelect = customSelect.querySelector('.native-select');
 
   let isOpen = false;
-  let selectedValue = '';
 
   function toggleDropdown(e) {
     if (e) e.stopPropagation();
@@ -441,22 +535,18 @@
 
   function selectOption(option) {
     options.forEach(opt => opt.classList.remove('selected'));
-
     if (option.dataset.value) {
       option.classList.add('selected');
       triggerText.textContent = option.textContent;
       triggerText.style.color = '#1a1a1a';
       customSelect.classList.add('has-value');
-      selectedValue = option.dataset.value;
       nativeSelect.value = option.dataset.value;
     } else {
       triggerText.textContent = '请选择咨询主题';
       triggerText.style.color = '';
       customSelect.classList.remove('has-value');
-      selectedValue = '';
       nativeSelect.value = '';
     }
-
     closeDropdown();
   }
 
@@ -487,41 +577,6 @@
     if (e.key === 'Escape') {
       closeDropdown();
     }
-    if (e.key === 'ArrowDown' && isOpen) {
-      e.preventDefault();
-      const active = dropdown.querySelector('.custom-select-option:hover');
-      const next = active ? active.nextElementSibling : options[1];
-      if (next) {
-        next.focus();
-        next.classList.add('hover');
-      }
-    }
-    if (e.key === 'ArrowUp' && isOpen) {
-      e.preventDefault();
-      const active = dropdown.querySelector('.custom-select-option:hover');
-      const prev = active ? active.previousElementSibling : null;
-      if (prev && !prev.classList.contains('placeholder')) {
-        prev.focus();
-        prev.classList.add('hover');
-      }
-    }
-  });
-
-  // 表单提交
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const btn = this.querySelector('.submit-btn');
-    const originalText = btn.textContent;
-    btn.textContent = '提交中...';
-    btn.style.pointerEvents = 'none';
-
-    setTimeout(() => {
-      btn.textContent = '已提交';
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.style.pointerEvents = '';
-      }, 2000);
-    }, 1000);
   });
 
   // 文本域自动高度
