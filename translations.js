@@ -1,0 +1,62 @@
+const translations = {
+  cn: {
+    nav_home: '首页', nav_services: '服务', nav_support: '支持', nav_lang: '语言',
+    lang_cn: 'Cn', lang_cn_trad: 'Cn繁', lang_en: 'En', lang_jp: 'Jp',
+    title: '联系我们', subtitle: '请填写以下信息，我们将尽快为您处理',
+    label_name: '对您的称呼', placeholder_name: '请输入您的称呼',
+    label_email: '联系邮箱', placeholder_email: '请输入您的联系邮箱',
+    label_subject: '问题选择（主题）',
+    select_placeholder: '请选择问题类型', select_account: '账户问题', select_payment: '支付相关',
+    select_technical: '技术支持', select_feedback: '建议反馈', select_other: '其他',
+    label_message: '详细填写',
+    placeholder_message: '支持 Markdown 格式\n\n可以使用 **粗体** *斜体* `代码` 等语法',
+    tab_edit: '编辑', tab_preview: '预览',
+    submit: '提交', submitting: '提交中...', submitted: '已提交',
+    toolbar: { bold: '粗体', italic: '斜体', heading: '标题', list: '列表', link: '链接', code: '代码', image: '图片' }
+  },
+  cn_trad: {
+    nav_home: '首頁', nav_services: '服務', nav_support: '支援', nav_lang: '語言',
+    lang_cn: 'Cn', lang_cn_trad: 'Cn繁', lang_en: 'En', lang_jp: 'Jp',
+    title: '聯絡我們', subtitle: '請填寫以下資訊，我們將盡快為您處理',
+    label_name: '對您的稱呼', placeholder_name: '請輸入您的稱呼',
+    label_email: '聯絡郵箱', placeholder_email: '請輸入您的聯絡郵箱',
+    label_subject: '問題選擇（主題）',
+    select_placeholder: '請選擇問題類型', select_account: '帳戶問題', select_payment: '支付相關',
+    select_technical: '技術支援', select_feedback: '建議反饋', select_other: '其他',
+    label_message: '詳細填寫',
+    placeholder_message: '支援 Markdown 格式\n\n可以使用 **粗體** *斜體* `代碼` 等語法',
+    tab_edit: '編輯', tab_preview: '預覽',
+    submit: '提交', submitting: '提交中...', submitted: '已提交',
+    toolbar: { bold: '粗體', italic: '斜體', heading: '標題', list: '列表', link: '連結', code: '程式碼', image: '圖片' }
+  },
+  en: {
+    nav_home: 'Home', nav_services: 'Services', nav_support: 'Support', nav_lang: 'Language',
+    lang_cn: 'Cn', lang_cn_trad: 'Cn Trad', lang_en: 'En', lang_jp: 'Jp',
+    title: 'Contact Us', subtitle: 'Please fill in the information below and we will get back to you shortly.',
+    label_name: 'Your Name', placeholder_name: 'Enter your name',
+    label_email: 'Email Address', placeholder_email: 'Enter your email address',
+    label_subject: 'Issue Category',
+    select_placeholder: 'Select an issue type', select_account: 'Account Issue', select_payment: 'Payment',
+    select_technical: 'Technical Support', select_feedback: 'Feedback', select_other: 'Other',
+    label_message: 'Details',
+    placeholder_message: 'Markdown supported\n\nUse **bold** *italic* `code` syntax',
+    tab_edit: 'Edit', tab_preview: 'Preview',
+    submit: 'Submit', submitting: 'Submitting...', submitted: 'Submitted',
+    toolbar: { bold: 'Bold', italic: 'Italic', heading: 'Heading', list: 'List', link: 'Link', code: 'Code', image: 'Image' }
+  },
+  jp: {
+    nav_home: 'ホーム', nav_services: 'サービス', nav_support: 'サポート', nav_lang: '言語',
+    lang_cn: 'Cn', lang_cn_trad: 'Cn繁', lang_en: 'En', lang_jp: 'Jp',
+    title: 'お問い合わせ', subtitle: '以下の情報を入力してください。すぐに対応いたします。',
+    label_name: 'お名前', placeholder_name: 'お名前を入力してください',
+    label_email: 'メールアドレス', placeholder_email: 'メールアドレスを入力してください',
+    label_subject: 'お問い合わせ種別',
+    select_placeholder: '種別を選択してください', select_account: 'アカウント問題', select_payment: '支払い関連',
+    select_technical: '技術サポート', select_feedback: 'フィードバック', select_other: 'その他',
+    label_message: '詳細内容',
+    placeholder_message: 'Markdown 対応\n\n**太字** *斜体* `コード` などが使えます',
+    tab_edit: '編集', tab_preview: 'プレビュー',
+    submit: '送信', submitting: '送信中...', submitted: '送信完了',
+    toolbar: { bold: '太字', italic: '斜体', heading: '見出し', list: 'リスト', link: 'リンク', code: 'コード', image: '画像' }
+  }
+};
