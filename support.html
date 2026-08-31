@@ -2,10 +2,13 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>客户支持</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/gh/Mael-667/Liquid-Glass-CSS@v1.2.1/liquidGlass.js"></script>
+
 <style>
   *, *::before, *::after {
     margin: 0;
@@ -23,6 +26,16 @@
     padding: 24px;
     position: relative;
     overflow-x: hidden;
+  }
+
+  /* 取消所有交互元素的框线 */
+  a, button, input, select, textarea, div[tabindex] {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  a:focus, button:focus, input:focus, select:focus, textarea:focus, div[tabindex]:focus {
+    outline: none !important;
+    box-shadow: none !important;
   }
 
   .container {
@@ -105,7 +118,6 @@
     border: 1.5px solid rgba(0, 0, 0, 0.08);
     border-radius: 14px;
     padding: 14px 18px;
-    outline: none;
     transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     appearance: none;
     -webkit-appearance: none;
@@ -127,7 +139,6 @@
   .input-wrapper textarea:focus {
     border-color: #1a1a1a;
     background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
   }
 
   .input-wrapper::after {
@@ -182,7 +193,6 @@
   .custom-select.open .custom-select-trigger {
     border-color: #1a1a1a;
     background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
   }
 
   .custom-select-trigger .arrow {
@@ -336,19 +346,28 @@
     z-index: 100;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 6px;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(24px) saturate(1.4);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 100px;
+    gap: 2px;
+    padding: 5px;
+    border-radius: 100px !important;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
   }
 
+  .navbar,
+  .navbar::after,
+  .navbar::before {
+    border-radius: 100px !important;
+  }
+
+  .navbar.liquidGlass {
+    width: auto;
+  }
+
+  .navbar a {
+    text-decoration: none;
+  }
+
   .nav-item {
-    padding: 10px 22px;
+    padding: 9px 20px;
     font-size: 14px;
     font-weight: 400;
     color: #999999;
@@ -358,6 +377,11 @@
     user-select: none;
     letter-spacing: 0.2px;
     white-space: nowrap;
+    display: block;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    position: relative;
   }
 
   .nav-item:hover {
@@ -371,10 +395,67 @@
     font-weight: 500;
   }
 
+  /* 语言切换 */
+  .lang-wrapper {
+    position: relative;
+  }
+
+  .lang-dropdown {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    min-width: 110px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(6px) scale(0.95);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .lang-wrapper.open .lang-dropdown {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .lang-item {
+    display: block;
+    padding: 11px 18px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #1a1a1a;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .lang-item:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .lang-item + .lang-item {
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+  }
+
+  .lang-item.active {
+    font-weight: 500;
+    background: rgba(0, 0, 0, 0.03);
+  }
+
   /* 桌面端：顶部悬浮 */
   @media (min-width: 768px) {
     .navbar {
       top: 28px;
+    }
+    .lang-dropdown {
+      bottom: calc(100% + 8px);
+      right: 0;
     }
   }
 
@@ -389,14 +470,18 @@
       width: calc(100% - 32px);
       max-width: 440px;
       justify-content: space-around;
-      gap: 0;
     }
 
     .nav-item {
-      padding: 10px 0;
+      padding: 9px 0;
       flex: 1;
       text-align: center;
       font-size: 13px;
+    }
+
+    .lang-dropdown {
+      bottom: calc(100% + 8px);
+      right: 0;
     }
   }
 
@@ -413,11 +498,19 @@
 </head>
 <body>
 
-<nav class="navbar" id="navbar">
-  <div class="nav-item active" data-page="home">首页</div>
-  <div class="nav-item" data-page="services">服务</div>
-  <div class="nav-item" data-page="support">支持</div>
-  <div class="nav-item" data-page="about">关于</div>
+<nav class="navbar liquidGlass glassLightMode" id="navbar">
+  <a href="https://exp.com/" class="nav-item active">首页</a>
+  <a href="https://exp.com/services" class="nav-item">服务</a>
+  <a href="https://exp.com/support" class="nav-item">支持</a>
+  <div class="nav-item lang-wrapper" id="langWrapper">
+    <span class="lang-trigger">语言</span>
+    <div class="lang-dropdown">
+      <a href="https://exp.com/en" class="lang-item">En</a>
+      <a href="https://exp.com/jp" class="lang-item">Jp</a>
+      <a href="https://exp.com/cn" class="lang-item">Cn</a>
+      <a href="https://exp.com/cn-traditional" class="lang-item">Cn繁</a>
+    </div>
+  </div>
 </nav>
 
 <div class="container">
@@ -480,11 +573,36 @@
 
 <script>
   // 导航栏切换
-  const navItems = document.querySelectorAll('.nav-item');
+  const navItems = document.querySelectorAll('.nav-item:not(.lang-wrapper)');
   navItems.forEach(item => {
     item.addEventListener('click', function() {
-      navItems.forEach(i => i.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
       this.classList.add('active');
+    });
+  });
+
+  // 语言切换
+  const langWrapper = document.getElementById('langWrapper');
+  const langTrigger = langWrapper.querySelector('.lang-trigger');
+
+  langTrigger.addEventListener('click', function(e) {
+    e.stopPropagation();
+    langWrapper.classList.toggle('open');
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!langWrapper.contains(e.target)) {
+      langWrapper.classList.remove('open');
+    }
+  });
+
+  // 语言选项点击高亮
+  const langItems = document.querySelectorAll('.lang-item');
+  langItems.forEach(item => {
+    item.addEventListener('click', function() {
+      langItems.forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
+      langWrapper.classList.remove('open');
     });
   });
 
