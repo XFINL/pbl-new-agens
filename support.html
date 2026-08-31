@@ -25,31 +25,6 @@
     overflow-x: hidden;
   }
 
-  /* 背景装饰光晕 */
-  body::before {
-    content: '';
-    position: fixed;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(180, 200, 255, 0.35) 0%, transparent 70%);
-    top: -200px;
-    right: -150px;
-    pointer-events: none;
-  }
-
-  body::after {
-    content: '';
-    position: fixed;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(200, 180, 255, 0.3) 0%, transparent 70%);
-    bottom: -180px;
-    left: -120px;
-    pointer-events: none;
-  }
-
   .container {
     width: 100%;
     max-width: 520px;
@@ -61,7 +36,7 @@
     background: rgba(255, 255, 255, 0.55);
     backdrop-filter: blur(24px) saturate(1.4);
     -webkit-backdrop-filter: blur(24px) saturate(1.4);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 28px;
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.04),
@@ -84,14 +59,14 @@
     font-size: 26px;
     font-weight: 500;
     letter-spacing: -0.5px;
-    color: #1a1a2e;
+    color: #1a1a1a;
     margin-bottom: 6px;
   }
 
   .subtitle {
     font-size: 14px;
     font-weight: 300;
-    color: #8888a0;
+    color: #999999;
     margin-bottom: 36px;
     line-height: 1.5;
   }
@@ -105,14 +80,14 @@
     display: block;
     font-size: 13px;
     font-weight: 500;
-    color: #555570;
+    color: #666666;
     margin-bottom: 8px;
     letter-spacing: 0.3px;
     transition: color 0.3s;
   }
 
   .form-group:focus-within label {
-    color: #4a6cf7;
+    color: #1a1a1a;
   }
 
   /* 输入框通用样式 */
@@ -127,9 +102,9 @@
     font-family: 'Outfit', sans-serif;
     font-size: 15px;
     font-weight: 400;
-    color: #1a1a2e;
+    color: #1a1a1a;
     background: rgba(255, 255, 255, 0.5);
-    border: 1.5px solid rgba(200, 200, 220, 0.4);
+    border: 1.5px solid rgba(0, 0, 0, 0.08);
     border-radius: 14px;
     padding: 14px 18px;
     outline: none;
@@ -140,26 +115,26 @@
 
   .input-wrapper input::placeholder,
   .input-wrapper textarea::placeholder {
-    color: #b0b0c8;
+    color: #bbbbbb;
     font-weight: 300;
   }
 
   .input-wrapper input:hover,
   .input-wrapper select:hover,
   .input-wrapper textarea:hover {
-    border-color: rgba(160, 160, 200, 0.6);
-    background: rgba(255, 255, 255, 0.65);
+    border-color: rgba(0, 0, 0, 0.18);
+    background: rgba(255, 255, 255, 0.7);
   }
 
   .input-wrapper input:focus,
   .input-wrapper select:focus,
   .input-wrapper textarea:focus {
-    border-color: #4a6cf7;
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 0 0 4px rgba(74, 108, 247, 0.1);
+    border-color: #1a1a1a;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
   }
 
-  /* 聚焦时底部发光条 */
+  /* 聚焦时底部线条 */
   .input-wrapper::after {
     content: '';
     position: absolute;
@@ -167,7 +142,7 @@
     left: 50%;
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #4a6cf7, transparent);
+    background: linear-gradient(90deg, transparent, #1a1a1a, transparent);
     border-radius: 2px;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     transform: translateX(-50%);
@@ -187,32 +162,43 @@
   .select-wrapper select {
     cursor: pointer;
     padding-right: 44px;
-    color: #1a1a2e;
   }
 
   .select-wrapper select option {
     background: #ffffff;
-    color: #1a1a2e;
-    padding: 10px;
+    color: #1a1a1a;
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  .select-wrapper select option:first-of-type {
+    color: #bbbbbb;
+  }
+
+  .select-wrapper select:not(.has-value) {
+    color: #bbbbbb;
   }
 
   .select-wrapper .arrow {
     position: absolute;
     right: 18px;
     top: 50%;
-    transform: translateY(-50%);
     width: 10px;
     height: 10px;
-    border-right: 2px solid #9999b0;
-    border-bottom: 2px solid #9999b0;
+    border-right: 2px solid #bbbbbb;
+    border-bottom: 2px solid #bbbbbb;
     transform: translateY(-70%) rotate(45deg);
     transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
   }
 
   .select-wrapper select:focus + .arrow {
-    border-color: #4a6cf7;
+    border-color: #1a1a1a;
     transform: translateY(-30%) rotate(-135deg);
+  }
+
+  .select-wrapper select.has-value + .arrow {
+    border-color: #666666;
   }
 
   /* 文本域 */
@@ -232,52 +218,23 @@
     font-size: 15px;
     font-weight: 500;
     color: #ffffff;
-    background: linear-gradient(135deg, #4a6cf7, #6a4cf7);
+    background: #1a1a1a;
     border: none;
     border-radius: 14px;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
     letter-spacing: 0.3px;
   }
 
-  .submit-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, #6a4cf7, #4a6cf7);
-    opacity: 0;
-    transition: opacity 0.4s;
-  }
-
   .submit-btn:hover {
+    background: #000000;
     transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(74, 108, 247, 0.25);
-  }
-
-  .submit-btn:hover::before {
-    opacity: 1;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
   }
 
   .submit-btn:active {
     transform: translateY(0);
-    box-shadow: 0 4px 12px rgba(74, 108, 247, 0.2);
-  }
-
-  .submit-btn span {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* 输入框光晕动画 */
-  @keyframes glowPulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.6; }
-  }
-
-  .form-group:focus-within .input-wrapper {
-    animation: glowPulse 2s ease-in-out infinite;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
   /* 响应式 */
@@ -339,37 +296,39 @@
         </div>
       </div>
 
-      <button type="submit" class="submit-btn">
-        <span>提交</span>
-      </button>
+      <button type="submit" class="submit-btn">提交</button>
     </form>
   </div>
 </div>
 
 <script>
   const form = document.getElementById('supportForm');
+  const select = document.getElementById('subject');
+
+  select.addEventListener('change', function() {
+    if (this.value) {
+      this.classList.add('has-value');
+    } else {
+      this.classList.remove('has-value');
+    }
+  });
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-
     const btn = this.querySelector('.submit-btn');
-    const originalText = btn.querySelector('span').textContent;
-    btn.querySelector('span').textContent = '提交中...';
+    const originalText = btn.textContent;
+    btn.textContent = '提交中...';
     btn.style.pointerEvents = 'none';
 
     setTimeout(() => {
-      btn.querySelector('span').textContent = '已提交';
-      btn.style.background = 'linear-gradient(135deg, #34c759, #28a745)';
-
+      btn.textContent = '已提交';
       setTimeout(() => {
-        btn.querySelector('span').textContent = originalText;
-        btn.style.background = '';
+        btn.textContent = originalText;
         btn.style.pointerEvents = '';
       }, 2000);
     }, 1000);
   });
 
-  // 自动调整文本域高度
   const textarea = document.getElementById('message');
   textarea.addEventListener('input', function() {
     this.style.height = 'auto';
