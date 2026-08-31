@@ -141,36 +141,6 @@
   .custom-select-option + .custom-select-option { border-top: 1px solid rgba(0,0,0,0.04); }
   .native-select { display: none; }
 
-  /* ===== 文件上传 ===== */
-  .file-upload { position: relative; }
-  .file-upload-input { display: none; }
-  .file-upload-label {
-    display: flex; align-items: center; gap: 10px;
-    width: 100%; font-family: 'Outfit', 'Noto Sans SC', sans-serif;
-    font-size: 15px; font-weight: 400; color: #bbbbbb;
-    background: rgba(255, 255, 255, 0.5);
-    border: 1.5px dashed rgba(0, 0, 0, 0.15);
-    border-radius: 14px; padding: 14px 18px; cursor: pointer;
-    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .file-upload-label:hover { border-color: rgba(0,0,0,0.3); background: rgba(255,255,255,0.7); }
-  .file-upload.has-file .file-upload-label { border-style: solid; border-color: rgba(0,0,0,0.18); color: #666666; }
-  .file-upload-icon {
-    width: 18px; height: 18px; flex-shrink: 0; position: relative;
-  }
-  .file-upload-icon::before, .file-upload-icon::after {
-    content: ''; position: absolute; background: #bbbbbb;
-    border-radius: 1px; transition: background 0.3s;
-  }
-  .file-upload-icon::before { width: 2px; height: 14px; top: 2px; left: 8px; }
-  .file-upload-icon::after { width: 14px; height: 2px; top: 8px; left: 2px; }
-  .file-upload.has-file .file-upload-icon::before,
-  .file-upload.has-file .file-upload-icon::after { background: #666666; }
-  .file-upload-label:hover .file-upload-icon::before,
-  .file-upload-label:hover .file-upload-icon::after { background: #666666; }
-  .file-name { font-size: 13px; color: #1a1a1a; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .file-hint { font-size: 12px; color: #bbbbbb; margin-top: 6px; margin-left: 2px; font-weight: 300; }
-
   /* ===== Markdown 编辑器 ===== */
   .md-editor {
     border: 1.5px solid rgba(0, 0, 0, 0.08);
@@ -423,24 +393,13 @@
               <button class="md-tab active" data-tab="edit" data-i18n="tab_edit">编辑</button>
               <button class="md-tab" data-tab="preview" data-i18n="tab_preview">预览</button>
             </div>
-            <textarea id="message" class="md-textarea" data-i18n-placeholder="placeholder_message" placeholder="支持 Markdown 格式&#10;&#10;可以使用 **粗体** *斜体* `代码` 等语法"></textarea>
+            <textarea id="message" class="md-textarea"></textarea>
             <div class="md-preview" id="mdPreview"></div>
           </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="attachment" data-i18n="label_attachment">附件（可选）</label>
-        <div class="file-upload" id="fileUpload">
-          <input type="file" id="attachment" class="file-upload-input" multiple>
-          <label for="attachment" class="file-upload-label">
-            <span class="file-upload-icon"></span>
-            <span class="file-upload-text" data-i18n="file_upload_text">点击选择文件</span>
-          </label>
-          <div class="file-name" id="fileName"></div>
-          <div class="file-hint" data-i18n="file_hint">支持图片、文档等格式，可选</div>
-        </div>
-      </div>
+      
 
       <button type="submit" class="submit-btn" data-i18n="submit">提交</button>
     </form>
@@ -462,9 +421,7 @@
       label_message: '详细填写',
       placeholder_message: '支持 Markdown 格式\n\n可以使用 **粗体** *斜体* `代码` 等语法',
       tab_edit: '编辑', tab_preview: '预览',
-      label_attachment: '附件（可选）', file_upload_text: '点击选择文件', file_hint: '支持图片、文档等格式，可选',
       submit: '提交', submitting: '提交中...', submitted: '已提交',
-      file_selected: '已选择 {n} 个文件',
       toolbar: { bold: '粗体', italic: '斜体', heading: '标题', list: '列表', link: '链接', code: '代码', image: '图片' }
     },
     cn_trad: {
@@ -479,9 +436,7 @@
       label_message: '詳細填寫',
       placeholder_message: '支援 Markdown 格式\n\n可以使用 **粗體** *斜體* `代碼` 等語法',
       tab_edit: '編輯', tab_preview: '預覽',
-      label_attachment: '附件（可選）', file_upload_text: '點擊選擇檔案', file_hint: '支援圖片、文件等格式，可選',
       submit: '提交', submitting: '提交中...', submitted: '已提交',
-      file_selected: '已選擇 {n} 個檔案',
       toolbar: { bold: '粗體', italic: '斜體', heading: '標題', list: '列表', link: '連結', code: '程式碼', image: '圖片' }
     },
     en: {
@@ -496,9 +451,7 @@
       label_message: 'Details',
       placeholder_message: 'Markdown supported\n\nUse **bold** *italic* `code` syntax',
       tab_edit: 'Edit', tab_preview: 'Preview',
-      label_attachment: 'Attachment (optional)', file_upload_text: 'Click to select files', file_hint: 'Images, documents, etc. Optional',
       submit: 'Submit', submitting: 'Submitting...', submitted: 'Submitted',
-      file_selected: '{n} file(s) selected',
       toolbar: { bold: 'Bold', italic: 'Italic', heading: 'Heading', list: 'List', link: 'Link', code: 'Code', image: 'Image' }
     },
     jp: {
@@ -513,9 +466,7 @@
       label_message: '詳細内容',
       placeholder_message: 'Markdown 対応\n\n**太字** *斜体* `コード` などが使えます',
       tab_edit: '編集', tab_preview: 'プレビュー',
-      label_attachment: '添付ファイル（任意）', file_upload_text: 'ファイルを選択', file_hint: '画像やドキュメント等。任意',
       submit: '送信', submitting: '送信中...', submitted: '送信完了',
-      file_selected: '{n} 個のファイルを選択',
       toolbar: { bold: '太字', italic: '斜体', heading: '見出し', list: 'リスト', link: 'リンク', code: 'コード', image: '画像' }
     }
   };
@@ -605,23 +556,6 @@
       document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
       this.classList.add('active');
     });
-  });
-
-  // ===== 文件上传 =====
-  const fileInput = document.getElementById('attachment');
-  const fileUpload = document.getElementById('fileUpload');
-  const fileName = document.getElementById('fileName');
-  fileInput.addEventListener('change', function() {
-    if (this.files.length > 0) {
-      fileUpload.classList.add('has-file');
-      const names = Array.from(this.files).map(f => f.name).join(', ');
-      fileName.textContent = names;
-      fileUpload.querySelector('.file-upload-text').textContent = translations[currentLang].file_selected.replace('{n}', this.files.length);
-    } else {
-      fileUpload.classList.remove('has-file');
-      fileName.textContent = '';
-      fileUpload.querySelector('.file-upload-text').textContent = translations[currentLang].file_upload_text;
-    }
   });
 
   // ===== Markdown 编辑器 =====
