@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <title>流量台 Glassmeter · 网站流量监测</title>
+    <script>
+      // 首屏前置应用主题，避免闪白
+      (function () {
+        try {
+          var saved = localStorage.getItem("gm_theme");
+          var theme =
+            saved ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+          document.documentElement.classList.toggle("dark", theme === "dark");
+        } catch (error) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,246 @@
+/* ==========================================================================
+   玻璃材质：折射 · 反射 · 边缘 · 边缘泛光 · 光晕 · 按压（涟漪 + 微扭曲）
+   规范见 docs/DESIGN.md 第 3 节
+   ========================================================================== */
+
+.glass {
+  position: relative;
+  isolation: isolate;
+  background: var(--glass-tint);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--halo), var(--halo-glow), inset 0 1px 0 var(--bevel-top),
+    inset 0 0 0 1px var(--rim-inner);
+  /* 折射（基础层）：模糊 + 提高饱和与亮度 */
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat))
+    brightness(var(--glass-bright));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat))
+    brightness(var(--glass-bright));
+  background-clip: padding-box;
+}
+
+/* 内容始终位于材质图层之上 */
+.glass > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 反射（镜面高光）：118° 主高光 + 底部环境回光 */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(118deg, var(--spec-a) 0%, transparent 38%),
+    linear-gradient(0deg, color-mix(in srgb, var(--spec-a) 45%, transparent) 0%, transparent 22%);
+  mix-blend-mode: var(--spec-blend);
+}
+
+/* 按压涟漪层：中心由 --px / --py 决定 */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    140px circle at var(--px, 50%) var(--py, 50%),
+    var(--press-ripple) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out-soft);
+}
+
+/* 尺寸档位：玻璃越"大"，折射与光晕越强 */
+.glass-sm {
+  --glass-blur: 10px;
+  border-radius: var(--radius-control);
+  box-shadow: var(--halo), inset 0 1px 0 var(--bevel-top), inset 0 0 0 1px var(--rim-inner);
+}
+
+.glass-lg {
+  --glass-blur: 36px;
+}
+
+/* 内陷玻璃（输入框）：反向倒角 + 内阴影 */
+.glass-inset {
+  position: relative;
+  background: color-mix(in srgb, var(--glass-tint) 70%, transparent);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-control);
+  box-shadow: var(--inset-shadow), inset 0 -1px 0 var(--bevel-top);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  backdrop-filter: blur(8px) saturate(140%);
+  transition: box-shadow var(--dur-base) var(--ease-out-soft),
+    border-color var(--dur-base) var(--ease-out-soft);
+}
+
+.glass-inset:focus-within,
+.glass-inset:focus {
+  border-color: color-mix(in srgb, var(--fg) 30%, transparent);
+  box-shadow: var(--inset-shadow), var(--rim-glow);
+  outline: none;
+}
+
+/* 实心面：下拉菜单等需要强可读性的浮层（避免 backdrop-filter 叠层开销） */
+.glass-solid {
+  background: color-mix(in srgb, var(--surface-solid) 88%, transparent);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-control);
+  box-shadow: var(--halo-strong), inset 0 1px 0 var(--bevel-top);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  backdrop-filter: blur(24px) saturate(140%);
+}
+
+/* --------------------------------------------------------------------------
+   可交互玻璃：边缘泛光（hover / focus）+ 按压（压缩 + 微倾斜 + 涟漪）
+   -------------------------------------------------------------------------- */
+
+/* 通用可按压元素（实心按钮等非玻璃件）：仅压缩 + 回弹 */
+.gm-pressable {
+  transition: transform var(--dur-fast) var(--ease-out-soft);
+}
+
+.gm-pressable.is-pressed {
+  transform: scale(0.985) translateY(1px);
+}
+
+.gm-pressable.is-releasing {
+  animation: gm-settle var(--dur-slow) var(--ease-out-soft);
+}
+
+.glass-interactive {
+  cursor: pointer;
+  transform: perspective(720px) rotateX(0deg) rotateY(0deg) scale(1);
+  transform-style: preserve-3d;
+  transition: transform var(--dur-fast) var(--ease-out-soft),
+    box-shadow var(--dur-base) var(--ease-out-soft), background-color var(--dur-base) linear;
+  will-change: transform;
+}
+
+.glass-interactive:hover {
+  box-shadow: var(--rim-glow), var(--halo), inset 0 1px 0 var(--bevel-top),
+    inset 0 0 0 1px var(--rim-inner);
+}
+
+.glass-interactive:active,
+.glass-interactive.is-pressed {
+  transform: perspective(720px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(0.985)
+    translateY(1px);
+  box-shadow: var(--rim-glow), var(--press-inset), var(--halo),
+    inset 0 0 0 1px var(--rim-inner);
+}
+
+.glass-interactive.is-pressed::after {
+  opacity: 1;
+  transition-duration: var(--dur-fast);
+}
+
+/* 释放回弹：0.985 → 1.004 → 1 */
+.glass-interactive.is-releasing {
+  animation: gm-settle var(--dur-slow) var(--ease-out-soft);
+}
+
+.glass-interactive:disabled,
+.glass-interactive[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.glass-interactive:disabled:hover,
+.glass-interactive[aria-disabled="true"]:hover {
+  box-shadow: var(--halo), inset 0 1px 0 var(--bevel-top), inset 0 0 0 1px var(--rim-inner);
+}
+
+/* --------------------------------------------------------------------------
+   折射增强（Chromium 渐进增强）：SVG 位移滤镜扭曲背景
+   由 lib/capability.ts 的运行时探测决定是否挂载 .glass-refract
+   -------------------------------------------------------------------------- */
+
+.glass-refract {
+  -webkit-backdrop-filter: url(#gm-refract) blur(4px) saturate(var(--glass-sat))
+    brightness(var(--glass-bright));
+  backdrop-filter: url(#gm-refract) blur(4px) saturate(var(--glass-sat))
+    brightness(var(--glass-bright));
+}
+
+/* 按压微扭曲（Chromium）：按下时背景产生细微"果冻"形变 */
+.glass-warp.is-pressed {
+  -webkit-backdrop-filter: url(#gm-warp) blur(6px) saturate(var(--glass-sat))
+    brightness(var(--glass-bright));
+  backdrop-filter: url(#gm-warp) blur(6px) saturate(var(--glass-sat))
+    brightness(var(--glass-bright));
+}
+
+/* --------------------------------------------------------------------------
+   其他玻璃构件
+   -------------------------------------------------------------------------- */
+
+/* 分段控件（时间范围 / 序列切换）外壳 */
+.glass-segment {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--glass-tint) 65%, transparent);
+  border: 1px solid var(--glass-edge);
+  box-shadow: inset 0 1px 0 var(--bevel-top), inset 0 0 0 1px var(--rim-inner);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
+}
+
+.glass-segment-item {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg-muted);
+  font-size: 13px;
+  line-height: 1;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color var(--dur-base) var(--ease-out-soft),
+    color var(--dur-base) var(--ease-out-soft), box-shadow var(--dur-base) var(--ease-out-soft);
+}
+
+.glass-segment-item:hover {
+  color: var(--fg);
+}
+
+.glass-segment-item[aria-selected="true"],
+.glass-segment-item[data-active="true"] {
+  background: var(--fg);
+  color: var(--bg);
+  box-shadow: var(--halo);
+}
+
+/* 分隔线（单色细线） */
+.gm-hairline {
+  height: 1px;
+  background: var(--line);
+}
+
+/* 图表图形元素：单色 + 纹理区分 */
+.gm-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent);
+  flex: none;
+}
+
+.gm-swatch-hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--fg) 0,
+    var(--fg) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}

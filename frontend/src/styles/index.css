@@ -1,0 +1,293 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   主题 Token（黑白灰阶，浅色 :root / 深色 .dark）
+   规范见 docs/DESIGN.md
+   ========================================================================== */
+
+:root {
+  /* 基础色板 */
+  --bg: #f2f2f3;
+  --fg: #0a0a0b;
+  --fg-muted: #6b6b70;
+  --fg-faint: #9b9ba1;
+  --line: rgba(0, 0, 0, 0.1);
+  --surface-solid: #ffffff;
+
+  /* 玻璃材质 */
+  --glass-tint: rgba(255, 255, 255, 0.55);
+  --glass-blur: 20px;
+  --glass-sat: 160%;
+  --glass-bright: 1.06;
+  --glass-edge: rgba(255, 255, 255, 0.7);
+  --bevel-top: rgba(255, 255, 255, 0.9);
+  --rim-inner: rgba(0, 0, 0, 0.06);
+  --spec-a: rgba(255, 255, 255, 0.85);
+  --spec-blend: normal;
+  --halo: 0 20px 44px -26px rgba(0, 0, 0, 0.3);
+  --halo-glow: 0 0 44px -20px rgba(255, 255, 255, 0.9);
+  --halo-strong: 0 28px 60px -28px rgba(0, 0, 0, 0.34);
+  --rim-glow: 0 0 0 1px rgba(0, 0, 0, 0.18), 0 0 26px -6px rgba(0, 0, 0, 0.22);
+  --press-ripple: rgba(255, 255, 255, 0.85);
+  --press-inset: inset 0 8px 18px -10px rgba(0, 0, 0, 0.35);
+  --inset-shadow: inset 0 2px 6px -2px rgba(0, 0, 0, 0.22);
+  --overlay: rgba(140, 140, 145, 0.35);
+  --chart-1: rgba(10, 10, 11, 0.92);
+  --chart-2: rgba(10, 10, 11, 0.62);
+  --chart-3: rgba(10, 10, 11, 0.42);
+  --chart-4: rgba(10, 10, 11, 0.26);
+  --chart-5: rgba(10, 10, 11, 0.14);
+  --chart-grid: rgba(0, 0, 0, 0.08);
+  --tint-weak: rgba(0, 0, 0, 0.05);
+  --tint-strong: rgba(0, 0, 0, 0.1);
+  --ambient-a: rgba(255, 255, 255, 0.95);
+  --ambient-b: rgba(212, 212, 216, 0.85);
+  --ambient-c: rgba(244, 244, 245, 0.9);
+
+  /* 几何与动效 */
+  --radius-panel: 18px;
+  --radius-control: 12px;
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 140ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+}
+
+.dark {
+  --bg: #08080a;
+  --fg: #fafafa;
+  --fg-muted: #a1a1a8;
+  --fg-faint: #6e6e76;
+  --line: rgba(255, 255, 255, 0.12);
+  --surface-solid: #131316;
+
+  --glass-tint: rgba(24, 24, 27, 0.42);
+  --glass-edge: rgba(255, 255, 255, 0.14);
+  --bevel-top: rgba(255, 255, 255, 0.24);
+  --rim-inner: rgba(255, 255, 255, 0.08);
+  --spec-a: rgba(255, 255, 255, 0.3);
+  --spec-blend: screen;
+  --halo: 0 24px 60px -32px rgba(0, 0, 0, 0.95);
+  --halo-glow: 0 0 52px -18px rgba(255, 255, 255, 0.16);
+  --halo-strong: 0 30px 70px -32px rgba(0, 0, 0, 1);
+  --rim-glow: 0 0 0 1px rgba(255, 255, 255, 0.3), 0 0 30px -6px rgba(255, 255, 255, 0.32);
+  --press-ripple: rgba(255, 255, 255, 0.45);
+  --press-inset: inset 0 8px 18px -10px rgba(0, 0, 0, 0.8);
+  --inset-shadow: inset 0 2px 6px -2px rgba(0, 0, 0, 0.6);
+  --overlay: rgba(0, 0, 0, 0.5);
+  --chart-1: rgba(250, 250, 250, 0.92);
+  --chart-2: rgba(250, 250, 250, 0.62);
+  --chart-3: rgba(250, 250, 250, 0.42);
+  --chart-4: rgba(250, 250, 250, 0.26);
+  --chart-5: rgba(250, 250, 250, 0.14);
+  --chart-grid: rgba(255, 255, 255, 0.1);
+  --tint-weak: rgba(255, 255, 255, 0.07);
+  --tint-strong: rgba(255, 255, 255, 0.14);
+  --ambient-a: rgba(29, 29, 34, 0.9);
+  --ambient-b: rgba(42, 42, 49, 0.9);
+  --ambient-c: rgba(20, 20, 24, 0.9);
+}
+
+/* ==========================================================================
+   基础样式
+   ========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+      "Microsoft YaHei", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: 0.01em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: 2px;
+  }
+
+  input::placeholder {
+    color: var(--fg-faint);
+  }
+
+  /* 细滚动条（单色） */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--fg-faint) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--fg-faint) 60%, transparent);
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer utilities {
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mono {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* 噪点层：抑制大面积渐变的色带 */
+  .gm-noise {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.025;
+  }
+}
+
+/* ==========================================================================
+   动效（Radix data-state 驱动 + 品牌关键帧）
+   ========================================================================== */
+
+@keyframes gm-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gm-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes gm-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes gm-pop-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(2px) scale(0.98);
+  }
+}
+
+@keyframes gm-settle {
+  0% {
+    transform: scale(0.985);
+  }
+  55% {
+    transform: scale(1.004);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes gm-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0) scale(1.06);
+  }
+}
+
+@keyframes gm-skeleton {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.28;
+  }
+}
+
+.gm-overlay[data-state="open"] {
+  animation: gm-fade-in var(--dur-base) var(--ease-out-soft);
+}
+
+.gm-overlay[data-state="closed"] {
+  animation: gm-fade-out var(--dur-fast) ease-in;
+}
+
+.gm-content[data-state="open"] {
+  animation: gm-pop-in var(--dur-base) var(--ease-out-soft);
+}
+
+.gm-content[data-state="closed"] {
+  animation: gm-pop-out var(--dur-fast) ease-in;
+}
+
+.gm-skeleton {
+  animation: gm-skeleton 1.6s ease-in-out infinite;
+}
+
+/* 环境底光斑缓慢漂移 */
+.gm-drift {
+  animation: gm-drift 26s ease-in-out infinite;
+}
+
+.gm-drift-slow {
+  animation: gm-drift 38s ease-in-out infinite reverse;
+}
+
+/* 动效降级：prefers-reduced-motion 时全部关闭 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
